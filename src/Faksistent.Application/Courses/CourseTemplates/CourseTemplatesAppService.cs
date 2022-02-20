@@ -17,14 +17,17 @@ namespace Faksistent.Courses.CourseTemplates
         private readonly IRepository<CoursePartition, Guid> _coursePartitionsRepository;
         private readonly IRepository<CourseTest, Guid> _courseTestsRepository;
         private readonly IRepository<CourseRestriction, Guid> _courseRestrictionsRepository;
+        private readonly IRepository<CourseRestrictionTest, Guid> _courseRestrictionTestsRepository;
         public CourseTemplatesAppService(IRepository<CourseTemplate, Guid> repository,
             IRepository<CoursePartition, Guid> coursePartitionsRepository,
             IRepository<CourseTest, Guid> courseTestsRepository,
-            IRepository<CourseRestriction, Guid> courseRestrictionsRepository) : base(repository)
+            IRepository<CourseRestriction, Guid> courseRestrictionsRepository,
+            IRepository<CourseRestrictionTest, Guid> courseRestrictionTestsRepository) : base(repository)
         {
             _coursePartitionsRepository = coursePartitionsRepository;
             _courseTestsRepository = courseTestsRepository;
             _courseRestrictionsRepository = courseRestrictionsRepository;
+            _courseRestrictionTestsRepository = courseRestrictionTestsRepository;
         }
 
         public async Task<CourseTemplateDto> CreatePartitionsAsync(CreatePartitionsDto input)
@@ -61,6 +64,8 @@ namespace Faksistent.Courses.CourseTemplates
 
         public async Task<CourseTemplateDto> CreateRestrictionsAsync(CreateCourseRestrictionsDto input)
         {
+            var restrictionIds = _courseRestrictionsRepository.GetAll().Where(x => x.CourseTemplateId == input.CourseTemplateId).Select(x => x.Id).ToList();
+            await _courseRestrictionTestsRepository.DeleteAsync(x => restrictionIds.Contains(x.CourseRestrictionId));
             await _courseRestrictionsRepository.DeleteAsync(x => x.CourseTemplateId == input.CourseTemplateId);
 
             foreach (var restrictionDto in input.Restrictions)
@@ -85,7 +90,7 @@ namespace Faksistent.Courses.CourseTemplates
 
         public override async Task<CourseTemplateDto> GetAsync(EntityDto<Guid> input)
         {
-            var template = Repository.GetAllIncluding(x => x.CoursePartitions, x => x.CourseTests, x => x.CourseRestrictions)
+            var template = Repository.GetAllIncluding(x => x.CoursePartitions, x => x.CourseTests).Include(x => x.CourseRestrictions).ThenInclude(x => x.Tests)
                 .FirstOrDefault(x => x.Id == input.Id);
 
             return ObjectMapper.Map<CourseTemplateDto>(template);

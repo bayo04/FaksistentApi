@@ -14,8 +14,6 @@ namespace Faksistent.Courses.CourseTemplates.Dto
 
         public decimal PointsForSignature { get; set; }
 
-        public Guid CourseTemplateId { get; set; }
-
         public List<Guid> CourseTestIds { get; set; }
     }
 }
