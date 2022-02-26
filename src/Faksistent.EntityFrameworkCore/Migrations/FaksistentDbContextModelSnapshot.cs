@@ -1921,6 +1921,9 @@ namespace Faksistent.Migrations
                     b.Property<Guid>("CourseId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("CourseTemplateId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
@@ -1948,6 +1951,8 @@ namespace Faksistent.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
+
+                    b.HasIndex("CourseTemplateId");
 
                     b.HasIndex("UserSemesterId");
 
@@ -2324,6 +2329,10 @@ namespace Faksistent.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Faksistent.Courses.CourseTemplate", "CourseTemplate")
+                        .WithMany()
+                        .HasForeignKey("CourseTemplateId");
+
                     b.HasOne("Faksistent.Semesters.UserSemester", "UserSemester")
                         .WithMany()
                         .HasForeignKey("UserSemesterId")
@@ -2331,6 +2340,8 @@ namespace Faksistent.Migrations
                         .IsRequired();
 
                     b.Navigation("Course");
+
+                    b.Navigation("CourseTemplate");
 
                     b.Navigation("UserSemester");
                 });

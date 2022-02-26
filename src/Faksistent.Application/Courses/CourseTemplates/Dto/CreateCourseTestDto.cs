@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace Faksistent.Courses.CourseTemplates.Dto
 {
     [AutoMapTo(typeof(CourseTest))]
+    [AutoMapFrom(typeof(CourseTestDto))]
     public class CreateCourseTestDto
     {
         public string Name { get; set; }

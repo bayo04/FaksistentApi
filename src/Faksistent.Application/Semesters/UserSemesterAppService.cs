@@ -48,5 +48,12 @@ namespace Faksistent.Semesters
 
             return base.UpdateAsync(input);
         }
+
+        public UserSemesterDto GetSelected()
+        {
+            var semester = Repository.GetAllIncluding(x => x.SemesterCourses).FirstOrDefault(x => x.CreatorUserId == AbpSession.UserId && x.IsSelected);
+
+            return ObjectMapper.Map<UserSemesterDto>(semester);
+        }
     }
 }

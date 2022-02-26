@@ -2,6 +2,7 @@
 using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
+using Faksistent.Courses;
 using Faksistent.Semesters.SemesterCourses.Dto;
 using System;
 using System.Collections.Generic;
@@ -15,9 +16,11 @@ namespace Faksistent.Semesters.SemesterCourses
     public class SemesterCourseAppService : AsyncCrudAppService<SemesterCourse, SemesterCourseDto, Guid, SemesterCourseRequestDto, CreateSemesterCourseDto, UpdateSemesterCourseDto>,
         ISemesterCourseAppService
     {
-        public SemesterCourseAppService(IRepository<SemesterCourse, Guid> repository) : base(repository)
+        private readonly IRepository<CourseTemplate, Guid> _courseTemplateRepository;
+        public SemesterCourseAppService(IRepository<SemesterCourse, Guid> repository,
+            IRepository<CourseTemplate, Guid> courseTemplateRepository) : base(repository)
         {
-
+            _courseTemplateRepository = courseTemplateRepository;
         }
 
         protected override IQueryable<SemesterCourse> CreateFilteredQuery(SemesterCourseRequestDto input)
@@ -33,6 +36,18 @@ namespace Faksistent.Semesters.SemesterCourses
             foreach(var course in input.Courses)
             {
                 await CreateAsync(course);
+            }
+        }
+
+        public async Task SetTemplate(SetTemplateDto input)
+        {
+            var template = _courseTemplateRepository.FirstOrDefault(input.CourseTemplateId);
+
+            var course = await Repository.FirstOrDefaultAsync(x => x.UserSemesterId == input.UserSemesterId && x.CourseId == template.CourseId);
+
+            if (course != null)
+            {
+                course.CourseTemplateId = input.CourseTemplateId;
             }
         }
     }

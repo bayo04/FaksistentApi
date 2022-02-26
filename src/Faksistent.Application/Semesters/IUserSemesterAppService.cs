@@ -12,5 +12,7 @@ namespace Faksistent.Semesters
     public interface IUserSemesterAppService : IAsyncCrudAppService<UserSemesterDto, Guid, UserSemesterRequestDto, CreateUserSemesterDto, UpdateUserSemesterDto>
     {
         Task SetIsSelected(EntityDto<Guid> entity);
+
+        UserSemesterDto GetSelected();
     }
 }

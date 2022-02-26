@@ -17,7 +17,9 @@ namespace Faksistent.Semesters.SemesterCourses.Dto
 
         public Guid CourseId { get; set; }
 
-        public UserSemesterDto UserSemester { get; set; }
+        public Guid? CourseTemplateId { get; set; }
+
+        //public UserSemesterDto UserSemester { get; set; }
 
         public CourseDto Course { get; set; }
     }

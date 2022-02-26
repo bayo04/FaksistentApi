@@ -1,5 +1,6 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.AutoMapper;
+using Faksistent.Semesters.SemesterCourses.Dto;
 using Faksistent.Users.Dto;
 using System;
 using System.Collections.Generic;
@@ -23,5 +24,7 @@ namespace Faksistent.Semesters.Dto
         public bool IsSelected { get; set; }
 
         public int? TenantId { get; set; }
+
+        public List<SemesterCourseDto> SemesterCourses { get; set; }
     }
 }

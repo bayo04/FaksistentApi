@@ -11,5 +11,7 @@ namespace Faksistent.Semesters.SemesterCourses
     public interface ISemesterCourseAppService : IAsyncCrudAppService<SemesterCourseDto, Guid, SemesterCourseRequestDto, CreateSemesterCourseDto, UpdateSemesterCourseDto>
     {
         Task CreateCoursesForSemester(CreateMultiSemesterCoursesDto input);
+
+        Task SetTemplate(SetTemplateDto entity);
     }
 }

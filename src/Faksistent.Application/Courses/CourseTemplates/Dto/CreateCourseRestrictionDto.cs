@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace Faksistent.Courses.CourseTemplates.Dto
 {
     [AutoMapTo(typeof(CourseRestriction))]
+    [AutoMapFrom(typeof(CourseRestrictionDto))]
     public class CreateCourseRestrictionDto
     {
         public decimal PointsForPass { get; set; }

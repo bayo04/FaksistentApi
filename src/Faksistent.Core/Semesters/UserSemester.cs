@@ -28,5 +28,7 @@ namespace Faksistent.Semesters
         public bool IsSelected { get; set; }
 
         public int TenantId { get; set; }
+
+        public List<SemesterCourse> SemesterCourses { get; set; }
     }
 }

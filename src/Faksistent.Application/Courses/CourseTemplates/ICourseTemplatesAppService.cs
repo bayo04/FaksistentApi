@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services;
+using Abp.Application.Services.Dto;
 using Faksistent.Courses.CourseTemplates.Dto;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,7 @@ namespace Faksistent.Courses.CourseTemplates
         Task<CourseTemplateDto> CreateTestsAsync(CreateCourseTestsDto input);
 
         Task<CourseTemplateDto> CreateRestrictionsAsync(CreateCourseRestrictionsDto input);
+
+        Task<CourseTemplateDto> CreatePrivate(EntityDto<Guid> input);
     }
 }

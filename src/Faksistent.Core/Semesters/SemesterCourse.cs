@@ -16,10 +16,15 @@ namespace Faksistent.Semesters
 
         public Guid CourseId { get; set; }
 
+        public Guid? CourseTemplateId { get; set; }
+
         [ForeignKey(nameof(UserSemesterId))]
         public UserSemester UserSemester { get; set; }
 
         [ForeignKey(nameof(CourseId))]
         public Course Course { get; set; }
+
+        [ForeignKey(nameof(CourseTemplateId))]
+        public CourseTemplate CourseTemplate { get; set; }
     }
 }

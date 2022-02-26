@@ -15,5 +15,7 @@ namespace Faksistent.Courses.CourseTemplates.Dto
         public Guid? UserSemesterId { get; set; }
 
         public Guid? CourseId { get; set; }
+
+        public bool? IsMine { get; set; }
     }
 }
