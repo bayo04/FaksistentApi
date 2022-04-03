@@ -1561,6 +1561,57 @@ namespace Faksistent.Migrations
                     b.ToTable("AbpUsers");
                 });
 
+            modelBuilder.Entity("Faksistent.Comments.Comment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("CourseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Tag")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("Faksistent.Courses.Course", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1959,6 +2010,108 @@ namespace Faksistent.Migrations
                     b.ToTable("SemesterCourses");
                 });
 
+            modelBuilder.Entity("Faksistent.Semesters.SemesterCoursePartition", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CoursePartitionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRecorded")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("SemesterCourseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("WasPresent")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("WasSignatureRecorded")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CoursePartitionId");
+
+                    b.HasIndex("SemesterCourseId");
+
+                    b.ToTable("SemesterCoursePartitions");
+                });
+
+            modelBuilder.Entity("Faksistent.Semesters.SemesterCourseTest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CourseTestId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("Points")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("SemesterCourseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseTestId");
+
+                    b.HasIndex("SemesterCourseId");
+
+                    b.ToTable("SemesterCourseTests");
+                });
+
             modelBuilder.Entity("Faksistent.Semesters.UserSemester", b =>
                 {
                     b.Property<Guid>("Id")
@@ -2229,6 +2382,21 @@ namespace Faksistent.Migrations
                     b.Navigation("LastModifierUser");
                 });
 
+            modelBuilder.Entity("Faksistent.Comments.Comment", b =>
+                {
+                    b.HasOne("Faksistent.Courses.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId");
+
+                    b.HasOne("Faksistent.Comments.Comment", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Parent");
+                });
+
             modelBuilder.Entity("Faksistent.Courses.CoursePartition", b =>
                 {
                     b.HasOne("Faksistent.Courses.CourseTemplate", null)
@@ -2334,7 +2502,7 @@ namespace Faksistent.Migrations
                         .HasForeignKey("CourseTemplateId");
 
                     b.HasOne("Faksistent.Semesters.UserSemester", "UserSemester")
-                        .WithMany()
+                        .WithMany("SemesterCourses")
                         .HasForeignKey("UserSemesterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2344,6 +2512,44 @@ namespace Faksistent.Migrations
                     b.Navigation("CourseTemplate");
 
                     b.Navigation("UserSemester");
+                });
+
+            modelBuilder.Entity("Faksistent.Semesters.SemesterCoursePartition", b =>
+                {
+                    b.HasOne("Faksistent.Courses.CoursePartition", "CoursePartition")
+                        .WithMany()
+                        .HasForeignKey("CoursePartitionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Faksistent.Semesters.SemesterCourse", "SemesterCourse")
+                        .WithMany("SemesterCoursePartitions")
+                        .HasForeignKey("SemesterCourseId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("CoursePartition");
+
+                    b.Navigation("SemesterCourse");
+                });
+
+            modelBuilder.Entity("Faksistent.Semesters.SemesterCourseTest", b =>
+                {
+                    b.HasOne("Faksistent.Courses.CourseTest", "CourseTest")
+                        .WithMany()
+                        .HasForeignKey("CourseTestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Faksistent.Semesters.SemesterCourse", "SemesterCourse")
+                        .WithMany("SemesterCourseTests")
+                        .HasForeignKey("SemesterCourseId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("CourseTest");
+
+                    b.Navigation("SemesterCourse");
                 });
 
             modelBuilder.Entity("Abp.Application.Features.EditionFeatureSetting", b =>
@@ -2434,6 +2640,18 @@ namespace Faksistent.Migrations
                     b.Navigation("CourseRestrictions");
 
                     b.Navigation("CourseTests");
+                });
+
+            modelBuilder.Entity("Faksistent.Semesters.SemesterCourse", b =>
+                {
+                    b.Navigation("SemesterCoursePartitions");
+
+                    b.Navigation("SemesterCourseTests");
+                });
+
+            modelBuilder.Entity("Faksistent.Semesters.UserSemester", b =>
+                {
+                    b.Navigation("SemesterCourses");
                 });
 #pragma warning restore 612, 618
         }

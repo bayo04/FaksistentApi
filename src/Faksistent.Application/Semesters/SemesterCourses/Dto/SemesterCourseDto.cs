@@ -1,5 +1,6 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.AutoMapper;
+using Faksistent.Courses.CourseTemplates.Dto;
 using Faksistent.Courses.Dto;
 using Faksistent.Semesters.Dto;
 using System;
@@ -19,8 +20,14 @@ namespace Faksistent.Semesters.SemesterCourses.Dto
 
         public Guid? CourseTemplateId { get; set; }
 
+        public CourseTemplateDto CourseTemplate { get; set; }
+
         //public UserSemesterDto UserSemester { get; set; }
 
         public CourseDto Course { get; set; }
+
+        public List<SemesterCoursePartitionDto> SemesterCoursePartitions { get; set; }
+
+        public List<SemesterCourseTestDto> SemesterCourseTests { get; set; }
     }
 }

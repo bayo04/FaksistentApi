@@ -26,5 +26,9 @@ namespace Faksistent.Semesters
 
         [ForeignKey(nameof(CourseTemplateId))]
         public CourseTemplate CourseTemplate { get; set; }
+
+        public List<SemesterCoursePartition> SemesterCoursePartitions { get; set; }
+
+        public List<SemesterCourseTest> SemesterCourseTests { get; set; }
     }
 }

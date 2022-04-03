@@ -66,6 +66,10 @@ namespace Faksistent.Courses.CourseTemplates
 
                 if (oldTest != null)
                 {
+                    oldTest.Name = testDto.Name;
+                    oldTest.PointsForPass = testDto.PointsForPass;
+                    oldTest.PointsForSignature = testDto.PointsForSignature;
+                    oldTest.TotalPoints = testDto.TotalPoints;
                     _courseTestsRepository.Update(oldTest);
                 }
                 else

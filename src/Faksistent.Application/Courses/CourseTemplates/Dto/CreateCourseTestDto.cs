@@ -15,10 +15,10 @@ namespace Faksistent.Courses.CourseTemplates.Dto
 
         public string Code { get; set; }
 
-        public int TotalAttendances { get; set; }
+        public decimal TotalPoints { get; set; }
 
-        public int AllowedAbsences { get; set; }
+        public decimal PointsForPass { get; set; }
 
-        public int AllowedAbsencesWithStimulation { get; set; }
+        public decimal PointsForSignature { get; set; }
     }
 }
