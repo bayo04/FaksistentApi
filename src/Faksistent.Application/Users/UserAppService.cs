@@ -25,7 +25,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Faksistent.Users
 {
-    [AbpAuthorize(PermissionNames.Pages_Users)]
+    //[AbpAuthorize(PermissionNames.Pages_Users)]
     public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUserResultRequestDto, CreateUserDto, UserDto>, IUserAppService
     {
         private readonly UserManager _userManager;
@@ -72,6 +72,15 @@ namespace Faksistent.Users
             }
 
             CurrentUnitOfWork.SaveChanges();
+
+            return MapToEntityDto(user);
+        }
+
+        public async Task<UserDto> GetCurrentUserAsync()
+        {
+            var user = await Repository.GetAll()
+                .Include(x => x.Roles)
+                .FirstOrDefaultAsync(x => x.Id == AbpSession.GetUserId());
 
             return MapToEntityDto(user);
         }

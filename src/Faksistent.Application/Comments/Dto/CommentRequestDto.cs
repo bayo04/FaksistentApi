@@ -8,5 +8,8 @@ namespace Faksistent.Comments.Dto
 {
     public class CommentRequestDto
     {
+        public Guid? CourseId { get; set; }
+
+        public string Tag { get; set; }
     }
 }

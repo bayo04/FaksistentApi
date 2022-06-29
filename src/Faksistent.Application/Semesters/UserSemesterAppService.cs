@@ -33,7 +33,7 @@ namespace Faksistent.Semesters
 
         public async Task SetIsSelected(EntityDto<Guid> entity)
         {
-            var oldSemester = await Repository.FirstOrDefaultAsync(x => x.IsSelected);
+            var oldSemester = await Repository.FirstOrDefaultAsync(x => x.IsSelected && x.CreatorUserId == AbpSession.UserId);
 
             if(oldSemester != null)
                 oldSemester.IsSelected = false;

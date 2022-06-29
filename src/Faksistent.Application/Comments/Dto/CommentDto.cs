@@ -18,5 +18,11 @@ namespace Faksistent.Comments.Dto
         public Guid? CourseId { get; set; }
 
         public string Tag { get; set; }
+
+        public DateTime CreationTime { get; set; }
+
+        public string CreatorUserUserName { get; set; }
+
+        public List<CommentDto> Children { get; set; }
     }
 }

@@ -49,6 +49,11 @@ namespace Faksistent.EntityFrameworkCore
                 .WithMany(c => c.SemesterCourseTests)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Parent)
+                .WithMany(c => c.Children)
+                .OnDelete(DeleteBehavior.NoAction);
+
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
+using Faksistent.Authorization.Users;
 using Faksistent.Courses;
 using System;
 using System.Collections.Generic;
@@ -27,5 +28,10 @@ namespace Faksistent.Comments
 
         [ForeignKey(nameof(CourseId))]
         public Course Course { get; set; }
+
+        [ForeignKey(nameof(CreatorUserId))]
+        public User CreatorUser { get; set; }
+
+        public List<Comment> Children { get; set; }
     }
 }

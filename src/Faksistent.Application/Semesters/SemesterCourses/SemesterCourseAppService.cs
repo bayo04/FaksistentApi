@@ -43,11 +43,16 @@ namespace Faksistent.Semesters.SemesterCourses
 
         public async Task CreateCoursesForSemester(CreateMultiSemesterCoursesDto input)
         {
-            await Repository.DeleteAsync(x => x.UserSemesterId == input.UserSemesterId);
+            await Repository.DeleteAsync(x => x.UserSemesterId == input.UserSemesterId && !input.Courses.Select(y => y.CourseId).Contains(x.CourseId));
 
             foreach(var course in input.Courses)
             {
-                await CreateAsync(course);
+                var oldCourse = await Repository.FirstOrDefaultAsync(x => x.UserSemesterId == input.UserSemesterId && x.CourseId == course.CourseId);
+
+                if (oldCourse == null)
+                {
+                    await CreateAsync(course);
+                }
             }
         }
 
@@ -81,7 +86,7 @@ namespace Faksistent.Semesters.SemesterCourses
             //.FirstOrDefault(x => x.Select(z => z.Id).Contains(input.CourseTestId));
 
             //var courseTest = tests.FirstOrDefault(x => x.Id == input.CourseTestId);
-            var test = _semesterCourseTestRepository.FirstOrDefault(x => x.CourseTestId == input.CourseTestId);
+            var test = _semesterCourseTestRepository.FirstOrDefault(x => x.CourseTestId == input.CourseTestId && x.SemesterCourseId == input.SemesterCourseId);
 
             if(test != null)
             {
